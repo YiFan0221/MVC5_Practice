@@ -18,18 +18,6 @@ namespace WebApplication1
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
-
-            routes.MapRoute(
-                name: "View",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "TestAction", id = UrlParameter.Optional }
-            );
-            
-            routes.MapRoute(
-                name: "Route1",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Guestbook", action = "Index", id = UrlParameter.Optional }
-            );
         }
     }
 }

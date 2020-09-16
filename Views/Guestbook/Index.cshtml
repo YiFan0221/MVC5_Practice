@@ -9,75 +9,93 @@
 
 </div>
 
-<h2>留言板</h2>
-<table>
-    @*If not no data in DB,print data and disp insert delete edit link.*@
-    @if (!Model.DataList.Count.Equals(0))
-    {
-        foreach (var item in Model.DataList)
+    <h2>留言板內容</h2>
+@*    @using (Html.BeginForm("Index", "Guestbooks", FormMethod.Get))
+    { 
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(model => model.Search)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model=>model.Search)
+                </td>
+                <td>
+                    <input type="submit" value="搜尋";
+                </td>
+            </tr>
+        </table>
+    }
+*@
+
+    <h2>留言板</h2>
+    <table>
+
+        @if (!Model.DataList.Count.Equals(0))
         {
+            foreach (var item in Model.DataList)
+            {
 
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(Model => Model.DataList[0].Name)
-                </td>
-                <td>
-                    @item.Name
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(Model => Model.DataList[0].CreateTime)
-                </td>
-                <td colspam="3">
-                    @item.CreateTime
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(Model => Model.DataList[0].Content)
-                </td>
-                <td colspam="3">
-                    @item.Content
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayNameFor(Model => Model.DataList[0].Reply)
-                </td>
-                <td colspan="3">
-                    @item.Reply
-                </td>
-            </tr>
-            <tr>
-                <td>                    
-                    @Html.DisplayNameFor(model => Model.DataList[0].ReplyTime)
-                </td>
-                <td>
-                    @item.ReplyTime
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(Model => Model.DataList[0].Name)
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(Model => Model.DataList[0].CreateTime)
+                    </td>
+                    <td colspam="3">
+                        @item.CreateTime
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(Model => Model.DataList[0].Content)
+                    </td>
+                    <td colspam="3">
+                        @item.Content
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(Model => Model.DataList[0].Reply)
+                    </td>
+                    <td colspan="3">
+                        @item.Reply
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => Model.DataList[0].ReplyTime)
+                    </td>
+                    <td>
+                        @item.ReplyTime
+                    </td>
+                </tr>
 
-            <tr>
-                <td colspan="2">
-                    @Html.ActionLink("修改留言", "Edit" , new { Id = item.Id })
-                    @Html.ActionLink("回覆留言", "Reply", new { Id = item.Id })
-                    @Html.ActionLink("刪除留言", "Delete", new { Id = item.Id })
-                </td>
-            </tr>
+                <tr>
+                    <td colspan="2">
+                        @Html.ActionLink("修改留言", "Edit" , new { Id = item.Id })
+                        @Html.ActionLink("回覆留言", "Reply", new { Id = item.Id })
+                        @Html.ActionLink("刪除留言", "Delete", new { Id = item.Id })
+                    </td>
+                </tr>
 
+            }
         }
-    }
-    @*if no data in DB,printf "資料庫內查無資料"*@
-    else
-    {
-        <tr>
-            <td colspan="4">
-                資料庫內查無資料
-            </td>
-        </tr>
-    }
-</table>
+        else
+        {
+            <tr>
+                <td colspan="4">
+                    資料庫內查無資料
+                </td>
+            </tr>
+        }
+    </table>
 
 <div>
     @Html.ActionLink("Back to List", "Index")

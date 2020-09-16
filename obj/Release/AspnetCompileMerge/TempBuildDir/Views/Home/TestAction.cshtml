@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "TestAction";
+}
+
+
+@*Razor練習區段 這是備註*@
+@{
+    @:這是測試輸出文字
+}
+<br />
+@{ string str1 = "這是用程式裝變數";}
+@str1 輸出文字<br />
+
+@{string strHtml = "<u1><li>項目一</li></u1>";}}
+@strHtml<br/>
+@Html.Raw(strHtml)<br/>
+<br />
+<h2>TestAction</h2>
+@using (Html.BeginForm())
+{
+
+    <div>
+        @Html.Label("輸入使用者名稱:")
+        <input type="text" name="UserId" />
+    </div>
+    <div>
+        @Html.Label("輸入年紀:")
+        <input type="text" name="Age" />
+    </div>
+    <div>
+        @Html.Label("輸入訊息:")
+        <input type="text" name="Content" />
+    </div>
+
+    <div>
+        使用者輸入的訊息為:
+        使用者名稱:@ViewData["UserId"]<br />
+        年齡      :@ViewData["Age"]<br />
+        內容      :@ViewData["Content"]<br />
+    </div>
+    <input type="submit" value="送出查詢" />
+}
+

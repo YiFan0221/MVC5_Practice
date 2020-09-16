@@ -16,7 +16,57 @@ namespace WebApplication1.Service
 
         //建立與資料庫連線
         private readonly SqlConnection conn = new SqlConnection(cnstr);
-
+        public List<Guestbooks> GetDataList(string Search)
+        {
+            List<Guestbooks> DataList = new List<Guestbooks>();
+            //SQL Cmd
+            string sql = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Search))
+            {
+                sql = $@" SELECT * FROM Guestbooks WHERE Name LIKE '%{Search}%'
+                OR Content LIKE '%{Search}%' OR Reply LIKE '%{Search}%'; ";
+            }
+            else
+            { 
+                sql = @"SELECT * FROM Guestbooks; ";
+            }
+            try
+            {
+                //Create SQLConnection
+                SqlConnection conn = new SqlConnection(cnstr);
+                //Open SQLConnectoon
+                conn.Open();
+                //Execute Cmd
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //Create SQLReader
+                SqlDataReader dr = cmd.ExecuteReader();
+                //Reader Data
+                while (dr.Read())
+                {
+                    Guestbooks Data = new Guestbooks();
+                    Data.Id = Convert.ToInt32(dr["Id"]);
+                    Data.Name = dr["Name"].ToString();
+                    Data.Content = dr["Content"].ToString();
+                    Data.CreateTime = Convert.ToDateTime(dr["CreateTime"]);
+                    //檢查是否為空白 若不是就擷取資料
+                    if (!dr["ReplyTime"].Equals(DBNull.Value))
+                    {
+                        Data.Reply = dr["Reply"].ToString();
+                        Data.ReplyTime = Convert.ToDateTime(dr["ReplyTime"]);
+                    }
+                    DataList.Add(Data);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return DataList;
+        }
         public List<Guestbooks> GetDataList()
         {
             List<Guestbooks> DataList = new List<Guestbooks>();

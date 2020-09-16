@@ -26,6 +26,14 @@ namespace WebApplication1.Controllers
             //return disp data to "view"
             return View(Data);
         }
+        /*
+        public ActionResult Index(string Search)
+        {
+            GuestbookViewModel Data = new GuestbookViewModel();
+            Data.Search = Search;
+            Data.DataList = GuestbookService.GetDataList();
+            return View(Data);
+        }*/
         #endregion
         # region Create:"新增留言"一開始的載入頁面      
         public ActionResult Create() 
