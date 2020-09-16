@@ -15,9 +15,9 @@ namespace WebApplication1.Controllers
     {
                                             
         private readonly GuestbookDBService GuestbookService = new GuestbookDBService(); //提取GuestbookDBService的函式
-        #region Index:取出資訊
-       
-        public ActionResult Index()
+
+
+        /*public ActionResult Index()
         {
             //create obj of VM
             GuestbookViewModel Data = new GuestbookViewModel();
@@ -25,24 +25,22 @@ namespace WebApplication1.Controllers
             Data.DataList = GuestbookService.GetDataList();
             //return disp data to "view"
             return View(Data);
-        }
-        /*
+        }*/
+        #region Index:取出資訊
         public ActionResult Index(string Search)
         {
             GuestbookViewModel Data = new GuestbookViewModel();
             Data.Search = Search;
-            Data.DataList = GuestbookService.GetDataList();
+            Data.DataList = GuestbookService.GetDataList(Data.Search);
             return View(Data);
-        }*/
+        }
         #endregion
-        # region Create:"新增留言"一開始的載入頁面      
+        # region Create:"新增留言"    
         public ActionResult Create() 
         {
             return PartialView();
         }
-        #endregion
-
-        #region Create:新增留言傳入動作時的Action       
+           
         //只接受頁面Post資料傳入
         [HttpPost]
         public ActionResult Create([Bind(Include = "Name,Content")] Guestbooks Data)
