@@ -17,6 +17,8 @@ namespace WebApplication1.Controllers
         private readonly GuestbookDBService GuestbookService = new GuestbookDBService(); //提取GuestbookDBService的函式
 
 
+
+        #region Index:取出資訊
         /*public ActionResult Index()
         {
             //create obj of VM
@@ -25,13 +27,20 @@ namespace WebApplication1.Controllers
             Data.DataList = GuestbookService.GetDataList();
             //return disp data to "view"
             return View(Data);
-        }*/
-        #region Index:取出資訊
+        }
         public ActionResult Index(string Search)
         {
             GuestbookViewModel Data = new GuestbookViewModel();
             Data.Search = Search;
             Data.DataList = GuestbookService.GetDataList(Data.Search);
+            return View(Data);
+        }*/
+        public ActionResult Index(string Search,int Page = 1)
+        {
+            GuestbookViewModel Data = new GuestbookViewModel();
+            Data.Search = Search;
+            Data.Paging = new ForPaging(Page);
+            Data.DataList = GuestbookService.GetDataList(Data.Paging , Data.Search);
             return View(Data);
         }
         #endregion

@@ -1,21 +1,173 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 using WebApplication1.Models;
 
 namespace WebApplication1.Service
 {
     public class GuestbookDBService
     {
-        //從Web.config抓取連線字串
+        //從Web.config抓取連線字串 ConnectionString
         private readonly static string cnstr = ConfigurationManager.
             ConnectionStrings["ASP.NET MVC"].ConnectionString;
 
         //建立與資料庫連線
         private readonly SqlConnection conn = new SqlConnection(cnstr);
+        public List<Guestbooks> GetDataList(ForPaging Paging, string Search)
+        {
+            List<Guestbooks> DataList = new List<Guestbooks>();
+
+            //Sql語法
+            if (!string.IsNullOrWhiteSpace(Search))
+            {
+                SetMaxPaging(Paging, Search);
+                DataList = GetAllDataList(Paging);
+            }
+            else
+            {
+                SetMaxPaging(Paging);
+                DataList = GetAllDataList(Paging);
+            }
+            return DataList;
+        }
+        public void SetMaxPaging(ForPaging Paging)
+        {
+            int Row = 0;
+            string sql = $@"SELECT * FROM Guestbooks; ";
+
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Row++;
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally 
+            {
+                conn.Close();
+            }
+            //計算總頁數
+            Paging.MaxPage = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Row) / Paging.ItemNum));
+            //重新設定正確頁數
+            Paging.SetRightPage();
+        }
+        public void SetMaxPaging(ForPaging Paging,string Search)
+        {
+            int Row = 0;
+            string sql = 
+                $@"SELECT * FROM Guestbooks WHERE Name LIKE'%{Search}%' 
+                OR Content LIKE '%{Search}%' 
+                OR Reply LIKE '%{ Search}%'; ";
+
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Row++;
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            //計算總頁數
+            Paging.MaxPage = Convert.ToInt32(Math.Ceiling(Convert.ToDouble(Row) / Paging.ItemNum));
+            //重新設定正確頁數
+            Paging.SetRightPage();
+        }
+        public List<Guestbooks> GetAllDataList(ForPaging paging, string Search)
+        {
+            List<Guestbooks> DataList = new List<Guestbooks>();
+            string sql = $@" select * from (select row_number() over(order by Id) as sort,* from Guestbooks where Name like '%{Search}%' or 
+            Content like '%{Search}%' or Reply like '%{Search}%' ) m Where m.sort Between {(paging.NowPage - 1) * paging.ItemNum + 1} and {paging.NowPage * paging.ItemNum} ";
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Guestbooks Data = new Guestbooks();
+                    Data.Id = Convert.ToInt32(dr["Id"]);
+                    Data.Name = dr["Name"].ToString();
+                    Data.Content = dr["Content"].ToString();
+                    Data.CreateTime = Convert.ToDateTime(dr["CreateTime"]);
+                    if (!dr["ReplyTime"].Equals(DBNull.Value))
+                    {
+                        Data.Reply = dr["Reply"].ToString();
+                        Data.ReplyTime = Convert.ToDateTime(dr["ReplyTime"]);
+                    }
+                    DataList.Add(Data);
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message.ToString());
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return DataList;
+        }
+        public List<Guestbooks> GetAllDataList(ForPaging paging)
+        {
+            List<Guestbooks> DataList = new List<Guestbooks>();
+            string sql = $@" select * from (select row_number() over(order by Id) as sort,* from Guestbooks ) m
+                Where m.sort Between {(paging.NowPage - 1) * paging.ItemNum + 1} and {paging.NowPage * paging.ItemNum} ";
+            try
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    Guestbooks Data = new Guestbooks();
+                    Data.Id = Convert.ToInt32(dr["Id"]);
+                    Data.Name = dr["Name"].ToString();
+                    Data.Content = dr["Content"].ToString();
+                    Data.CreateTime = Convert.ToDateTime(dr["CreateTime"]);
+                    if (!dr["ReplyTime"].Equals(DBNull.Value))
+                    {
+                        Data.Reply = dr["Reply"].ToString();
+                        Data.ReplyTime = Convert.ToDateTime(dr["ReplyTime"]);
+                    }
+                    DataList.Add(Data);
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception(e.Message.ToString());
+            }
+            finally {
+                conn.Close();
+            }
+            return DataList;
+        }
         public List<Guestbooks> GetDataList(string Search)
         {
             List<Guestbooks> DataList = new List<Guestbooks>();

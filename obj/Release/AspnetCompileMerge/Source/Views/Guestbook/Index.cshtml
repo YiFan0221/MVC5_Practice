@@ -1,25 +1,40 @@
 ﻿@model WebApplication1.ViewModels.GuestbookViewModel
+
 @{
     ViewBag.Title = "Index";
 }
 
-@*載入新增留言的頁面*@
+@*載入新增留言頁面*@
 <div id="CreateData">
     @Html.Action("Create")
-
 </div>
 
 <h2>留言板</h2>
+@using (Html.BeginForm("Index", "Guestbooks", FormMethod.Get))
+{
+    <table>
+        <tr>
+            <td>
+                @Html.LabelFor(model => model.Search)
+            </td>
+            <td>
+                @Html.TextBoxFor(model => model.Search)
+            </td>
+            <td>
+                <input type="submit" value="搜尋" />
+            </td>
+        </tr>
+    </table>
+}
 <table>
-    @*If not no data in DB,print data and disp insert delete edit link.*@
+    @*如果資料庫中不是零筆記錄，則顯示資料，並列出新增、刪除與修改連結*@
     @if (!Model.DataList.Count.Equals(0))
     {
         foreach (var item in Model.DataList)
         {
-
             <tr>
                 <td>
-                    @Html.DisplayNameFor(Model => Model.DataList[0].Name)
+                    @Html.DisplayNameFor(model => model.DataList[0].Name)
                 </td>
                 <td>
                     @item.Name
@@ -27,48 +42,46 @@
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(Model => Model.DataList[0].CreateTime)
+                    @Html.DisplayNameFor(model => model.DataList[0].CreateTime)
                 </td>
-                <td colspam="3">
+                <td>
                     @item.CreateTime
                 </td>
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(Model => Model.DataList[0].Content)
+                    @Html.DisplayNameFor(model => model.DataList[0].Content)
                 </td>
-                <td colspam="3">
+                <td colspan="3">
                     @item.Content
                 </td>
             </tr>
             <tr>
                 <td>
-                    @Html.DisplayNameFor(Model => Model.DataList[0].Reply)
+                    @Html.DisplayNameFor(model => model.DataList[0].Reply)
                 </td>
                 <td colspan="3">
                     @item.Reply
                 </td>
             </tr>
             <tr>
-                <td>                    
-                    @Html.DisplayNameFor(model => Model.DataList[0].ReplyTime)
+                <td>
+                    @Html.DisplayNameFor(model => model.DataList[0].ReplyTime)
                 </td>
                 <td>
                     @item.ReplyTime
                 </td>
             </tr>
-
             <tr>
                 <td colspan="2">
-                    @Html.ActionLink("修改留言", "Edit" , new { Id = item.Id })
+                    @Html.ActionLink("修改留言", "Edit", new { Id = item.Id })
                     @Html.ActionLink("回覆留言", "Reply", new { Id = item.Id })
                     @Html.ActionLink("刪除留言", "Delete", new { Id = item.Id })
                 </td>
             </tr>
-
         }
     }
-    @*if no data in DB,printf "資料庫內查無資料"*@
+    @*如果資料庫中為零筆記錄，則印出"資料庫內查無資料"*@
     else
     {
         <tr>
@@ -77,12 +90,49 @@
             </td>
         </tr>
     }
+    <tr>
+        <td>
+            @*若目前所在頁數大於1，則顯示上一頁與最前頁的按鈕*@
+            @if (Model.Paging.NowPage > 1)
+            {
+                @Html.ActionLink("<<", "Index", new { Page = 1, Search = Model.Search })
+                @Html.ActionLink("<", "Index", new { Page = Model.Paging.NowPage - 1, Search = Model.Search })
+            }
+        </td>
+        <td>
+            @*顯示當前頁數前後各五頁的頁數*@
+            @for (var page = (Model.Paging.NowPage - 6); page < (Model.Paging.NowPage +
+                6); page++)
+            {
+                if ((page > 0) && (page <= Model.Paging.MaxPage))
+                {
+                    if (page == Model.Paging.NowPage)
+                    {
+                        <b>@page</b>
+                    }
+                    else
+                    {
+                        @Html.ActionLink(page.ToString(), "Index", new { Page = page, Search = Model.Search })
+                    }
+                }
+            }
+        </td>
+        <td>
+            @*若目前所在頁數小於總頁數，則顯示下一頁與最後一頁的按鈕*@
+            @if (Model.Paging.NowPage < Model.Paging.MaxPage)
+            {
+                @Html.ActionLink(">", "Index", new { Page = Model.Paging.NowPage + 1, Search = Model.Search })
+                @Html.ActionLink(">>", "Index", new { Page = Model.Paging.MaxPage, Search = Model.Search })
+            }
+        </td>
+    </tr>
+
 </table>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
+@*匯入驗證欄位所須的JavaScript*@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

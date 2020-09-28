@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<parameters>
+  <parameter name="ASP.NET MVC-Web.config Connection String" description="ASP.NET MVC 應用程式在 web.config 中用來存取資料庫的連接字串。" defaultValue="Persist Security Info=False;&#xD;&#xA;        Integrated Security=true; Server=LAPTOP-8FAAALRS\SQLEXPRESS;initial catalog=ASP.NET MVC;&#xD;&#xA;        User ID=garysql;Password=garysql;" tags="SqlConnectionString">
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\gary8\\Source\\Repos\\WebDemo\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='ASP.NET MVC']/@connectionString" />
+  </parameter>
+</parameters>
