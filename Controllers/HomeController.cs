@@ -33,18 +33,17 @@ namespace WebApplication1.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "嗨!   我是逸帆!" +
-                "我原本寫C++但因為興趣開始利用時間開始試著建置自己的網站。" +
-                "這是我練習試做的網站，裏頭有留言板、會員登入系統、以及購物車的練習。" ;
+            ViewBag.Message = "嗨!  您好!" +
+                "因興趣而開始利用時間開始試著建立自己的網站。" +
+                "裏頭試做與資料庫對接並用Ajax顯示的留言板" +
+                "未來還會增加會員登入系統、以及購物車的功能。" ;
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "你可以透過 : g1991221@gmail.com 來連繫我!";
-
-            return View();
+           return View();
         }
     }
 }

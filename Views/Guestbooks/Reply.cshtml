@@ -37,7 +37,7 @@
     @*判斷是否有人回覆，如果無人回覆即可修改否則不可修改*@
     if (Model.ReplyTime.ToShortDateString() == "0001/1/1" || Model.ReplyTime == null)
     {
-        <input type="submit" value="回覆留言" />
+        <input type="submit" class="btn btn-primary" value="回覆留言" />
     }
     else
     {
