@@ -7,6 +7,7 @@
     <title>@ViewBag.Title 我的DEMO網站</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -17,9 +18,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("留言板", "Index", "Guestbook", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("會員登錄系統", "Index", "Guestbook", new { area = "" }, new { @class = "navbar-brand" })
-                @Html.ActionLink("購物車", "Index", "Guestbook", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("留言板", "Index", "Guestbooks", new { area = "" }, new { @class = "navbar-brand" })
+
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -40,6 +40,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
     @RenderSection("scripts", required: false)
-</body>
+    </body>
 </html>

@@ -128,17 +128,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\GuestbookController.cs" />
+    <Compile Include="Controllers\GuestbooksController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Guestbook.cs" />
-    <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\ForPaging.cs" />
-    <Compile Include="Service\GuestbookDBService.cs" />
-    <Compile Include="ViewModels\GuestbookViewModel.cs" />
+    <Compile Include="Service\GuestbooksDBService.cs" />
+    <Compile Include="ViewModels\GuestbooksViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -151,6 +150,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="libman.json" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\IISProfile.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -178,12 +178,13 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Guestbook\Index.cshtml" />
+    <Content Include="Views\Guestbooks\Index.cshtml" />
     <Content Include="Views\Home\TestAction.cshtml" />
     <Content Include="Views\Home\ProductView.cshtml" />
-    <Content Include="Views\Guestbook\Edit.cshtml" />
-    <Content Include="Views\Guestbook\Reply.cshtml" />
-    <Content Include="Views\Guestbook\Create.cshtml" />
+    <Content Include="Views\Guestbooks\Edit.cshtml" />
+    <Content Include="Views\Guestbooks\Reply.cshtml" />
+    <Content Include="Views\Guestbooks\Create.cshtml" />
+    <Content Include="Views\Guestbooks\GetDataList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
