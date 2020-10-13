@@ -8,7 +8,7 @@ using System.Web.Services.Description;
 
 namespace WebApplication1.Models
 {
-    public class Guestbooks
+    public class Boards
     {
 
         [DisplayName("編號:")] //目前型態式int 之後要改成GUID

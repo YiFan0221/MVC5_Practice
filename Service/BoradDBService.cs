@@ -10,7 +10,7 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Service
 {
-    public class GuestbooksDBService
+    public class BoradDBService
     {
         //從Web.config抓取連線字串 ConnectionString
         private readonly static string cnstr = ConfigurationManager.
@@ -18,9 +18,9 @@ namespace WebApplication1.Service
 
         //建立與資料庫連線
         private readonly SqlConnection conn = new SqlConnection(cnstr);
-        public List<Guestbooks> GetDataList(ForPaging Paging, string Search)
+        public List<Boards> GetDataList(ForPaging Paging, string Search)
         {
-            List<Guestbooks> DataList = new List<Guestbooks>();
+            List<Boards> DataList = new List<Boards>();
 
             //Sql語法
             if (!string.IsNullOrWhiteSpace(Search))
@@ -97,9 +97,9 @@ namespace WebApplication1.Service
             //重新設定正確頁數
             Paging.SetRightPage();
         }
-        public List<Guestbooks> GetAllDataList(ForPaging paging, string Search)
+        public List<Boards> GetAllDataList(ForPaging paging, string Search)
         {
-            List<Guestbooks> DataList = new List<Guestbooks>();
+            List<Boards> DataList = new List<Boards>();
             string sql = $@" select * from (select row_number() over(order by Id) as sort,* from Guestbooks where Name like '%{Search}%' or 
             Content like '%{Search}%' or Reply like '%{Search}%' ) m Where m.sort Between {(paging.NowPage - 1) * paging.ItemNum + 1} and {paging.NowPage * paging.ItemNum} ";
             try
@@ -109,7 +109,7 @@ namespace WebApplication1.Service
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    Guestbooks Data = new Guestbooks();
+                    Boards Data = new Boards();
                     Data.Id = Convert.ToInt32(dr["Id"]);
                     Data.Name = dr["Name"].ToString();
                     Data.Content = dr["Content"].ToString();
@@ -133,9 +133,9 @@ namespace WebApplication1.Service
             }
             return DataList;
         }
-        public List<Guestbooks> GetAllDataList(ForPaging paging)
+        public List<Boards> GetAllDataList(ForPaging paging)
         {
-            List<Guestbooks> DataList = new List<Guestbooks>();
+            List<Boards> DataList = new List<Boards>();
             string sql = $@" select * from (select row_number() over(order by Id) as sort,* from Guestbooks ) m
                 Where m.sort Between {(paging.NowPage - 1) * paging.ItemNum + 1} and {paging.NowPage * paging.ItemNum} ";
             try
@@ -145,7 +145,7 @@ namespace WebApplication1.Service
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    Guestbooks Data = new Guestbooks();
+                    Boards Data = new Boards();
                     Data.Id = Convert.ToInt32(dr["Id"]);
                     Data.Name = dr["Name"].ToString();
                     Data.Content = dr["Content"].ToString();
@@ -168,9 +168,9 @@ namespace WebApplication1.Service
             }
             return DataList;
         }
-        public List<Guestbooks> GetDataList(string Search)
+        public List<Boards> GetDataList(string Search)
         {
-            List<Guestbooks> DataList = new List<Guestbooks>();
+            List<Boards> DataList = new List<Boards>();
             //SQL Cmd
             string sql = string.Empty;
             if (!string.IsNullOrWhiteSpace(Search))
@@ -195,7 +195,7 @@ namespace WebApplication1.Service
                 //Reader Data
                 while (dr.Read())
                 {
-                    Guestbooks Data = new Guestbooks();
+                    Boards Data = new Boards();
                     Data.Id = Convert.ToInt32(dr["Id"]);
                     Data.Name = dr["Name"].ToString();
                     Data.Content = dr["Content"].ToString();
@@ -219,9 +219,9 @@ namespace WebApplication1.Service
             }
             return DataList;
         }
-        public List<Guestbooks> GetDataList()
+        public List<Boards> GetDataList()
         {
-            List<Guestbooks> DataList = new List<Guestbooks>();
+            List<Boards> DataList = new List<Boards>();
             //SQL Cmd
             string sql = @"Select * from Guestbooks ";
 
@@ -238,7 +238,7 @@ namespace WebApplication1.Service
                 //Reader Data
                 while (dr.Read())
                 {
-                    Guestbooks Data = new Guestbooks();
+                    Boards Data = new Boards();
                     Data.Id = Convert.ToInt32(dr["Id"]);
                     Data.Name = dr["Name"].ToString();
                     Data.Content = dr["Content"].ToString();
@@ -263,10 +263,10 @@ namespace WebApplication1.Service
             return DataList;
         }
         #region 新增一筆資料
-        public void InsertGuestbooks(Guestbooks newData)
+        public void InsertGuestbooks(Boards newData)
         {
             //SQL cmd :: Insert
-            string sql = $@" INSERT INTO Guestbooks(Name , Content , CreateTime) VALUES('{newData.Name}','{newData.Content}','{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}' ); ";
+            string sql = $@" INSERT INTO Guestbooks (Name , Content , CreateTime) VALUES('{newData.Name}','{newData.Content}','{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}' ); ";
             try
             {
                 conn.Open();
@@ -286,9 +286,9 @@ namespace WebApplication1.Service
 
         #region 查詢一筆資料
         //藉由編號取得單筆資料方法
-        public Guestbooks GetDataById(int Id)
+        public Boards GetDataById(int Id)
         {
-            Guestbooks Data = new Guestbooks();
+            Boards Data = new Boards();
             //sql
             string sql = $@" SELECT * FROM Guestbooks WHERE Id = {Id};";
             try
@@ -324,7 +324,7 @@ namespace WebApplication1.Service
 
         #region 修改留言
         //修改留言
-        public void UpdateGuestBooks(Guestbooks UpdateData)
+        public void UpdateGuestBooks(Boards UpdateData)
         {
 
             //sql
@@ -352,7 +352,7 @@ namespace WebApplication1.Service
 
         #region 回覆留言
         //回覆留言
-        public void ReplyGuestBooks(Guestbooks ReplyData)
+        public void ReplyGuestBooks(Boards ReplyData)
         {
 
             //sql
@@ -384,7 +384,7 @@ namespace WebApplication1.Service
         public bool CheckUpdate(int Id)
         {
             //根據Id取得要修改的資料
-            Guestbooks Data = GetDataById(Id);
+            Boards Data = GetDataById(Id);
             //判斷並回傳 (判斷是否有資料以及是否有回應)
             return (Data !=null && (Data.ReplyTime == null || Data.ReplyTime.ToShortDateString() == "0001/1/1"));
         }

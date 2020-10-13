@@ -1,10 +1,10 @@
-﻿@model WebApplication1.Models.Guestbooks
-@*建立回覆留言所需的表單*@
+﻿@model WebApplication1.Models.Boards
+@*建立修改欄位所需的表單*@
 
 @using (Html.BeginForm())
 {
-    <h3>回覆留言</h3>
-    @*建立回覆內容表格*@
+    <h3>修改留言</h3>
+    @*建立修改留言表格*@
     <table>
         <tr>
             <td>
@@ -24,24 +24,16 @@
                 @Html.ValidationMessageFor(model => model.Content)
             </td>
         </tr>
-        <tr>
-            <td>
-                @Html.LabelFor(model => model.Reply)
-            </td>
-            <td>
-                @Html.TextBoxFor(model => model.Reply)
-                @Html.ValidationMessageFor(model => model.Reply)
-            </td>
-        </tr>
     </table>
     @*判斷是否有人回覆，如果無人回覆即可修改否則不可修改*@
+
     if (Model.ReplyTime.ToShortDateString() == "0001/1/1" || Model.ReplyTime == null)
     {
-        <input type="submit" class="btn btn-primary" value="回覆留言" />
+        <input type="submit" class="btn btn-primary" value="修改留言" />
     }
     else
     {
-        <text> 此留言已回覆，請</text>
+        <text> 此留言已回覆無法修改，請</text>
         @Html.ActionLink("返回列表", "Index")
     }
 }

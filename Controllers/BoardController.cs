@@ -11,10 +11,10 @@ using WebApplication1.ViewModels;
 
 namespace WebApplication1.Controllers
 {
-    public class GuestbooksController : Controller
+    public class BoardController : Controller
     {
                                             
-        private readonly GuestbooksDBService GuestbooksService = new GuestbooksDBService(); //提取GuestbookDBService的函式
+        private readonly BoradDBService GuestbooksService = new BoradDBService(); //提取GuestbookDBService的函式
         #region Index:取出資訊
         /*public ActionResult Index()
         {
@@ -49,7 +49,7 @@ namespace WebApplication1.Controllers
         public ActionResult GetDataList(string Search, int Page = 1)
         {//取得資料陣列用Action，將Page(頁數)預設為1
             //宣告一個新頁面模型
-            GuestbooksViewModel Data = new GuestbooksViewModel();
+            Board_ViewModels Data = new Board_ViewModels();
             //將傳入值Search(搜尋)放入頁面模型中
             Data.Search = Search;
             //新增頁面模型中的分頁
@@ -62,7 +62,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         //設定搜尋為接受頁面POST傳入
         //使用Bind的Inculde來定義只接受的欄位，用來避免傳入其他不相干值
-        public ActionResult GetDataList([Bind(Include = "Search")] GuestbooksViewModel Data)
+        public ActionResult GetDataList([Bind(Include = "Search")] Board_ViewModels Data)
         {
             //重新導向頁面至開始頁面，並傳入搜尋值 
             return RedirectToAction("GetDataList", new { Search = Data.Search });
@@ -77,7 +77,7 @@ namespace WebApplication1.Controllers
            
         //只接受頁面Post資料傳入
         [HttpPost]
-        public ActionResult Create([Bind(Include = "Name,Content")] Guestbooks Data)
+        public ActionResult Create([Bind(Include = "Name,Content")] Boards Data)
         {
             GuestbooksService.InsertGuestbooks(Data);
             return RedirectToAction("Index");
@@ -88,14 +88,14 @@ namespace WebApplication1.Controllers
         public ActionResult Edit(int Id)
         {
             //從Service取得頁面所需需求
-            Guestbooks Data = GuestbooksService.GetDataById(Id);
+            Boards Data = GuestbooksService.GetDataById(Id);
             //將資料傳入View中
             return View(Data);
         }
 
         //修改留言頁面要根據傳入編號來決定要修改的資料
         [HttpPost]
-        public ActionResult Edit(int Id , [Bind(Include = "Name,Content")]Guestbooks UpdateData)
+        public ActionResult Edit(int Id , [Bind(Include = "Name,Content")]Boards UpdateData)
         {
             if (GuestbooksService.CheckUpdate(Id))
             {
@@ -116,14 +116,14 @@ namespace WebApplication1.Controllers
         public ActionResult Reply(int Id)
         {
             //從Service取得頁面所需需求
-            Guestbooks Data = GuestbooksService.GetDataById(Id);
+            Boards Data = GuestbooksService.GetDataById(Id);
             //將資料傳入View中
             return View(Data);
         }
 
         //修改留言頁面要根據傳入編號來決定要修改的資料
         [HttpPost]
-        public ActionResult Reply(int Id, [Bind(Include = "Reply,ReplyTime")] Guestbooks ReplyData)
+        public ActionResult Reply(int Id, [Bind(Include = "Reply,ReplyTime")] Boards ReplyData)
         {
             if (GuestbooksService.CheckUpdate(Id))
             {

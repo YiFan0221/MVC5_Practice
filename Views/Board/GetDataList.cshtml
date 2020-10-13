@@ -1,10 +1,9 @@
-﻿@model WebApplication1.ViewModels.GuestbooksViewModel
-
+﻿@model WebApplication1.ViewModels.Board_ViewModels
 
 <div id="DataList">
     <h2>留言板</h2>
     @*建立搜尋所須的表單(使用AjaxHelper，並設定取代Id為DataList部分)*@
-    @using (Ajax.BeginForm("GetDataList", "Guestbooks",
+    @using (Ajax.BeginForm("GetDataList", "Board",
         new AjaxOptions
         {
             InsertionMode = InsertionMode.Replace,
